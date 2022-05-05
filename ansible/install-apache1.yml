@@ -1,0 +1,14 @@
+---
+- hosts: 192.168.55.20
+  # become: yes
+  tasks:
+    - name: deploy container
+      community.docker.docker_container:
+        name: apache1
+        image: httpd:alpine
+        ports:
+          - 80:80
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
+          - /home/vagrant/resources/web-1/:/usr/local/apache2/htdocs
+        # restart_policy: always

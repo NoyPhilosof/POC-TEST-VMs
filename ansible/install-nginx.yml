@@ -1,0 +1,18 @@
+---
+- hosts: 192.168.55.10
+  # become: yes
+  tasks:
+    - name: deploy container
+      community.docker.docker_container:
+        name: proxy
+        image: nginx:alpine
+        ports:
+          - 80:80
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
+          - /home/vagrant/resources/nginx/:/etc/nginx/conf.d/
+        restart_policy: always
+
+
+# docker run -p 8080:80 --rm -v ~/resources/nginx/default.conf:/etc/nginx/conf.d/default.conf nginx:alpine
+# docker run -p 8080:80 --rm -v ~/resources/nginx/:/etc/nginx/conf.d/ nginx:alpine
