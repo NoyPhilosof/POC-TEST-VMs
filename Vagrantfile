@@ -69,10 +69,10 @@ Vagrant.configure("2") do |config|
     end
   end
   
-  config.vm.provision "ansible" do |ansible|
-    ansible.verbose = "v"
-    ansible.playbook = "./ansible/install-docker.yml"
-  end
+  # config.vm.provision "ansible" do |ansible|
+  #   ansible.verbose = "v"
+  #   ansible.playbook = "./ansible/install-docker.yml"
+  # end
 
 end
 
