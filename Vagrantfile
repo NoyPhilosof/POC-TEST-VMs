@@ -6,7 +6,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "load-balancer" do |vm1|
     vm1.vm.hostname = "load-balancer"
     vm1.vm.box = "ubuntu/bionic64"
-    vm1.vm.network "private_network", ip: "192.168.55.10"
+    vm1.vm.network "private_network", ip: "192.168.80.10"
     vm1.vm.synced_folder "./resources/", "/home/vagrant/resources/", create: true
 
     vm1.vm.provision "shell" do |s|
@@ -29,7 +29,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "web-1" do |vm2|
     vm2.vm.hostname = "web-1"
     vm2.vm.box = "ubuntu/bionic64"
-    vm2.vm.network "private_network", ip: "192.168.55.20"
+    vm2.vm.network "private_network", ip: "192.168.80.20"
     vm2.vm.synced_folder "./resources/", "/home/vagrant/resources/", create: true
     
     vm2.vm.provision "shell" do |s|
@@ -51,7 +51,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "web-2" do |vm3|
     vm3.vm.hostname = "web-2"
     vm3.vm.box = "ubuntu/bionic64"
-    vm3.vm.network "private_network", ip: "192.168.55.30"
+    vm3.vm.network "private_network", ip: "192.168.80.30"
     vm3.vm.synced_folder "./resources/", "/home/vagrant/resources/", create: true
 
     vm3.vm.provision "shell" do |s|
