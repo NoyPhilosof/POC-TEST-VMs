@@ -39,14 +39,8 @@ pipeline {
         
         stage('Build & Provision VMs') {
             steps {
-                sh 'vagrant up'
-            }
-        }
-        
-        
-        stage('Give em few more seconds') {
-            steps {
-                sleep 10
+                sh '''vagrant up
+                sleep 10'''
             }
         }
 
@@ -68,17 +62,12 @@ pipeline {
                 curl 192.168.80.10
                 curl 192.168.80.10
                 curl 192.168.80.10
-                curl 192.168.80.10'''
+                curl 192.168.80.10
+                sleep 30'''
             }
         }
         
-        
-        stage('Few more seconds') {
-            steps {
-                sleep 30
-            }
-        }  
-        
+
                 stage('Destroy VMs') {
             steps {
                 sh 'vagrant destroy -f'
