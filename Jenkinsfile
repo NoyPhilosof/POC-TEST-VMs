@@ -6,7 +6,7 @@ pipeline {
 
     stages {
         
-        stage('Clone Repository') {
+        stage('Clone Repo') {
             steps {
                 git branch: 'main', url: 'http://github.com/NoyPhilosof/POC-TEST.git'
             }
@@ -20,7 +20,7 @@ pipeline {
         // }
        
 
-        stage('Clear Old VMs') {
+        stage('Clean Old VMs') {
             steps {
                 catchError(message: 'Clear VMs before run') {
                     script {
@@ -37,44 +37,32 @@ pipeline {
         }
 
         
-        stage('VMs & Provision') {
+        stage('Build & Provision VMs') {
             steps {
                 sh 'vagrant up'
             }
         }
         
         
-        stage('wait for VMs') {
+        stage('Give em few more seconds') {
             steps {
                 sleep 10
             }
         }
 
         
-        stage('Install docker on all VMs') {
+        stage('Install docker and deploy containers') {
             steps {
                 sh '''cd ansible
                 ansible-playbook --private-key=/var/lib/jenkins/.ssh/id_rsa -u vagrant install-docker.yml
                 ansible-playbook --private-key=/var/lib/jenkins/.ssh/id_rsa -u vagrant install-nginx.yml
                 ansible-playbook --private-key=/var/lib/jenkins/.ssh/id_rsa -u vagrant install-apache1.yml
                 ansible-playbook --private-key=/var/lib/jenkins/.ssh/id_rsa -u vagrant install-apache2.yml'''
-                // sh 'ansible-playbook --private-key=~/.vagrant.d/insecure_private_key -u vagrant -i .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory install-docker.yml''
-                // sh '''cd ansible
-                // ansible-playbook ./ansible/install-docker.yml'''
             }
         }
         
         
-        // stage('Install nginx + apache') {
-        //     steps {
-        //         sh '''ansible-playbook --private-key=/var/lib/jenkins/.ssh/id_rsa -u vagrant install-nginx.yml
-        //         ansible-playbook --private-key=/var/lib/jenkins/.ssh/id_rsa -i -u vagrant install-apache1.yml
-        //         ansible-playbook --private-key=/var/lib/jenkins/.ssh/id_rsa -i -u vagrant install-apache2.yml'''
-        //     }
-        // }
-        
-        
-        stage('TEST') {
+        stage('Web TEST') {
             steps {
                 sh '''curl 192.168.80.10
                 curl 192.168.80.10
@@ -85,21 +73,16 @@ pipeline {
         }
         
         
-        stage('wait') {
+        stage('Few more seconds') {
             steps {
                 sleep 30
             }
-        }           
-
-    
-    post {
-        always {
-            sh 'vagrant destroy -f'
+        }  
+        
+                stage('Destroy VMs') {
+            steps {
+                sh 'vagrant destroy -f'
             }
-        failure {
-            echo "GUESS WHAT???"
-            }
-        }    
+        } 
     }
 }
-
