@@ -10,7 +10,7 @@ Vagrant.configure("2") do |config|
     vm1.vm.synced_folder "./resources/", "/home/vagrant/resources/", create: true
 
     vm1.vm.provision "shell" do |s|
-    ssh_pub_key = File.readlines("/tmp/.ssh/id_rsa.pub").first.strip
+    ssh_pub_key = File.readlines("/var/lib/jenkins/.ssh/id_rsa.pub").first.strip
     s.inline = <<-SHELL
     echo #{ssh_pub_key} >> /home/vagrant/.ssh/authorized_keys
     echo #{ssh_pub_key} >> /root/.ssh/authorized_keys
@@ -33,7 +33,7 @@ Vagrant.configure("2") do |config|
     vm2.vm.synced_folder "./resources/", "/home/vagrant/resources/", create: true
     
     vm2.vm.provision "shell" do |s|
-    ssh_pub_key = File.readlines("/tmp/.ssh/id_rsa.pub").first.strip
+    ssh_pub_key = File.readlines("/var/lib/jenkins/.ssh/id_rsa.pub").first.strip
     s.inline = <<-SHELL
     echo #{ssh_pub_key} >> /home/vagrant/.ssh/authorized_keys
     echo #{ssh_pub_key} >> /root/.ssh/authorized_keys
@@ -52,7 +52,7 @@ Vagrant.configure("2") do |config|
     vm3.vm.hostname = "web-2"
     vm3.vm.box = "ubuntu/bionic64"
     vm3.vm.network "private_network", ip: "192.168.80.30"
-    vm3.vm.synced_folder "./resources/", "/home/vagrant/resources/", create: true
+    vm3.vm.synced_folder "./resources/", "/var/lib/jenkins/.ssh/id_rsa.pub", create: true
 
     vm3.vm.provision "shell" do |s|
     ssh_pub_key = File.readlines("/tmp/.ssh/id_rsa.pub").first.strip
