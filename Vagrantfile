@@ -8,19 +8,8 @@ Vagrant.configure("2") do |config|
     vm1.vm.box = "ubuntu/bionic64"
     vm1.vm.network "private_network", ip: "192.168.80.10"
     vm1.vm.synced_folder "./resources/", "/home/vagrant/resources/", create: true
-    # vm1.ssh.insert_key = false
-    # vm1.ssh.username = "Vagrant"
-    # vm1.ssh.password = "vagrant"
-    # vm1.ssh.private_key_path = "/var/lib/jenkins/.ssh/id_rsa.pub"
     ssh_pub_key = File.readlines("#{Dir.home}/.ssh/id_rsa.pub").first.strip
     vm1.vm.provision 'shell', inline: "echo #{ssh_pub_key} >> /home/vagrant/.ssh/authorized_keys", privileged: false
-    # vm1.vm.provision "shell" do |s|
-    # ssh_pub_key = File.readlines("/var/lib/jenkins/.ssh/id_rsa.pub").first.strip
-    # s.inline = <<-SHELL
-    # echo #{ssh_pub_key} >> /home/vagrant/.ssh/authorized_keys
-    # echo #{ssh_pub_key} >> /root/.ssh/authorized_keys
-    # SHELL
-    # end
 
     vm1.vm.provider "virtualbox" do |vb|
       vb.name = "load-balancer"
@@ -36,19 +25,8 @@ Vagrant.configure("2") do |config|
     vm2.vm.box = "ubuntu/bionic64"
     vm2.vm.network "private_network", ip: "192.168.80.20"
     vm2.vm.synced_folder "./resources/", "/home/vagrant/resources/", create: true
-    # vm2.ssh.insert_key = false
-    # vm2.ssh.username = "Vagrant"
-    # vm2.ssh.password = "vagrant"
-    # vm2.ssh.private_key_path = "/var/lib/jenkins/.ssh/id_rsa.pub"
     ssh_pub_key = File.readlines("#{Dir.home}/.ssh/id_rsa.pub").first.strip
     vm2.vm.provision 'shell', inline: "echo #{ssh_pub_key} >> /home/vagrant/.ssh/authorized_keys", privileged: false
-    # vm2.vm.provision "shell" do |s|
-    # ssh_pub_key = File.readlines("/var/lib/jenkins/.ssh/id_rsa.pub").first.strip
-    # s.inline = <<-SHELL
-    # echo #{ssh_pub_key} >> /home/vagrant/.ssh/authorized_keys
-    # echo #{ssh_pub_key} >> /root/.ssh/authorized_keys
-    # SHELL
-    # end
 
     vm2.vm.provider "virtualbox" do |vb|
       vb.name = "web-1"
@@ -63,19 +41,8 @@ Vagrant.configure("2") do |config|
     vm3.vm.box = "ubuntu/bionic64"
     vm3.vm.network "private_network", ip: "192.168.80.30"
     vm3.vm.synced_folder "./resources/", "/home/vagrant/resources/", create: true
-    # vm3.ssh.insert_key = false
-    # vm3.ssh.username = "Vagrant"
-    # vm3.ssh.password = "vagrant"
-    # vm3.ssh.private_key_path = "/var/lib/jenkins/.ssh/id_rsa.pub"
     ssh_pub_key = File.readlines("#{Dir.home}/.ssh/id_rsa.pub").first.strip
     vm3.vm.provision 'shell', inline: "echo #{ssh_pub_key} >> /home/vagrant/.ssh/authorized_keys", privileged: false
-    # vm3.vm.provision "shell" do |s|
-    # ssh_pub_key = File.readlines("/var/lib/jenkins/.ssh/id_rsa.pub").first.strip
-    # s.inline = <<-SHELL
-    # echo #{ssh_pub_key} >> /home/vagrant/.ssh/authorized_keys
-    # echo #{ssh_pub_key} >> /root/.ssh/authorized_keys
-    # SHELL
-    # end
 
     vm3.vm.provider "virtualbox" do |vb|
       vb.name = "web-2"
@@ -90,10 +57,3 @@ Vagrant.configure("2") do |config|
   # end
 
 end
-
-
-#~/.ssh/authorized_keys - public key
-#~/.ssh/ - private key
-
-
-# config.vm.provision "file", source: "~/.ssh/id_rsa.pub", destination: "~/.ssh/id_rsa.pub"
