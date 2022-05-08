@@ -1,7 +1,7 @@
 properties([githubProjectProperty(displayName: '', projectUrlStr: 'https://github.com/NoyPhilosof/POC-TEST.git/')])
 
 pipeline {
-    agent any
+    agent { label 'ubuntu' }
 
     stages {
         
