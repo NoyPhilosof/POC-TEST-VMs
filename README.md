@@ -7,7 +7,6 @@
 <p>4. Python (v3.8.10)</p>
 <p>5. Ansible (core v2.12.5, ansible v5.7.1) with community.docker plugin (v.2.4.0)</p>
 <p>6. Vagrant (v2.2.19)</p>
-<p>7. Public and private SSH keys (default naming) stored in /var/lib/jenkins/.ssh</p>
 <p>&nbsp;</p>
 <h4><strong>Instructions for use: (Tested on ubuntu 20.04)</strong></h4>
 <p>Please pull code from git with Jenkins and run the pipeline or copy the contents of Jenkinsfile in a new pipeline script.</p>
