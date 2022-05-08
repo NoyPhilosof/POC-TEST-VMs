@@ -1,32 +1,48 @@
 Started by user admin
-[Pipeline] Start of Pipeline (hide)
+[Pipeline] Start of Pipeline
 [Pipeline] properties
 [Pipeline] node
-Running on Jenkins in /var/lib/jenkins/workspace/FINAL-TEST
+Running on Jenkins in /var/lib/jenkins/workspace/FRESH-ANSIBLE-TEST
 [Pipeline] {
 [Pipeline] stage
 [Pipeline] { (Clone Repo)
 [Pipeline] git
 The recommended git tool is: NONE
 No credentials specified
-Cloning the remote Git repository
-Cloning repository http://github.com/NoyPhilosof/POC-TEST.git
- > git init /var/lib/jenkins/workspace/FINAL-TEST # timeout=10
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/FRESH-ANSIBLE-TEST/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url http://github.com/NoyPhilosof/POC-TEST.git # timeout=10
 Fetching upstream changes from http://github.com/NoyPhilosof/POC-TEST.git
  > git --version # timeout=10
  > git --version # 'git version 2.25.1'
  > git fetch --tags --force --progress -- http://github.com/NoyPhilosof/POC-TEST.git +refs/heads/*:refs/remotes/origin/* # timeout=10
- > git config remote.origin.url http://github.com/NoyPhilosof/POC-TEST.git # timeout=10
- > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
-Avoid second fetch
  > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
-Checking out Revision f62dbbbd22fdbe4ad1b4bae4d43de1a18e1e9cad (refs/remotes/origin/main)
+Checking out Revision 435295500a66f65c7e1bd7db330ae48d3d5988f1 (refs/remotes/origin/main)
  > git config core.sparsecheckout # timeout=10
- > git checkout -f f62dbbbd22fdbe4ad1b4bae4d43de1a18e1e9cad # timeout=10
+ > git checkout -f 435295500a66f65c7e1bd7db330ae48d3d5988f1 # timeout=10
  > git branch -a -v --no-abbrev # timeout=10
- > git checkout -b main f62dbbbd22fdbe4ad1b4bae4d43de1a18e1e9cad # timeout=10
-Commit message: "fixed docker installation script"
-First time build. Skipping changelog.
+ > git branch -D main # timeout=10
+ > git checkout -b main 435295500a66f65c7e1bd7db330ae48d3d5988f1 # timeout=10
+Commit message: "added successful run report"
+ > git rev-list --no-walk 435295500a66f65c7e1bd7db330ae48d3d5988f1 # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Create SSH Key)
+[Pipeline] catchError
+[Pipeline] {
+[Pipeline] script
+[Pipeline] {
+[Pipeline] sh
++ ssh-keygen -f /var/lib/jenkins/.ssh/id_rsa -q -N 
+/var/lib/jenkins/.ssh/id_rsa already exists.
+Overwrite (y/n)? 
+[Pipeline] echo
+default SSH Key exists
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // catchError
 [Pipeline] }
 [Pipeline] // stage
 [Pipeline] stage
@@ -36,11 +52,11 @@ First time build. Skipping changelog.
 [Pipeline] script
 [Pipeline] {
 [Pipeline] sh
-+ vagrant destroy -f
++ vagrant destroy load-balancer web-1 web-2 -f
 ==> web-2: VM not created. Moving on...
 ==> web-1: VM not created. Moving on...
 ==> load-balancer: VM not created. Moving on...
-+ sleep 10
++ sleep 5
 [Pipeline] }
 [Pipeline] // script
 [Pipeline] }
@@ -55,6 +71,7 @@ Bringing machine 'load-balancer' up with 'virtualbox' provider...
 Bringing machine 'web-1' up with 'virtualbox' provider...
 Bringing machine 'web-2' up with 'virtualbox' provider...
 ==> load-balancer: Importing base box 'ubuntu/bionic64'...
+
 [KProgress: 90%
 [K==> load-balancer: Matching MAC address for NAT networking...
 ==> load-balancer: Checking if box 'ubuntu/bionic64' version '20220505.0.0' is up to date...
@@ -71,7 +88,6 @@ Bringing machine 'web-2' up with 'virtualbox' provider...
     load-balancer: SSH address: 127.0.0.1:2222
     load-balancer: SSH username: vagrant
     load-balancer: SSH auth method: private key
-    load-balancer: Warning: Remote connection disconnect. Retrying...
     load-balancer: 
     load-balancer: Vagrant insecure key detected. Vagrant will automatically replace
     load-balancer: this with a newly generated keypair for better security.
@@ -93,11 +109,13 @@ Bringing machine 'web-2' up with 'virtualbox' provider...
 ==> load-balancer: Setting hostname...
 ==> load-balancer: Configuring and enabling network interfaces...
 ==> load-balancer: Mounting shared folders...
-    load-balancer: /vagrant => /var/lib/jenkins/workspace/FINAL-TEST
-    load-balancer: /home/vagrant/resources => /var/lib/jenkins/workspace/FINAL-TEST/resources
+    load-balancer: /vagrant => /var/lib/jenkins/workspace/FRESH-ANSIBLE-TEST
+    load-balancer: /home/vagrant/resources => /var/lib/jenkins/workspace/FRESH-ANSIBLE-TEST/resources
 ==> load-balancer: Running provisioner: shell...
     load-balancer: Running: inline script
 ==> web-1: Importing base box 'ubuntu/bionic64'...
+
+[KProgress: 60%
 [KProgress: 90%
 [K==> web-1: Matching MAC address for NAT networking...
 ==> web-1: Checking if box 'ubuntu/bionic64' version '20220505.0.0' is up to date...
@@ -116,7 +134,6 @@ Bringing machine 'web-2' up with 'virtualbox' provider...
     web-1: SSH username: vagrant
     web-1: SSH auth method: private key
     web-1: Warning: Connection reset. Retrying...
-    web-1: Warning: Remote connection disconnect. Retrying...
     web-1: 
     web-1: Vagrant insecure key detected. Vagrant will automatically replace
     web-1: this with a newly generated keypair for better security.
@@ -138,11 +155,12 @@ Bringing machine 'web-2' up with 'virtualbox' provider...
 ==> web-1: Setting hostname...
 ==> web-1: Configuring and enabling network interfaces...
 ==> web-1: Mounting shared folders...
-    web-1: /vagrant => /var/lib/jenkins/workspace/FINAL-TEST
-    web-1: /home/vagrant/resources => /var/lib/jenkins/workspace/FINAL-TEST/resources
+    web-1: /vagrant => /var/lib/jenkins/workspace/FRESH-ANSIBLE-TEST
+    web-1: /home/vagrant/resources => /var/lib/jenkins/workspace/FRESH-ANSIBLE-TEST/resources
 ==> web-1: Running provisioner: shell...
     web-1: Running: inline script
 ==> web-2: Importing base box 'ubuntu/bionic64'...
+
 [KProgress: 90%
 [K==> web-2: Matching MAC address for NAT networking...
 ==> web-2: Checking if box 'ubuntu/bionic64' version '20220505.0.0' is up to date...
@@ -160,8 +178,8 @@ Bringing machine 'web-2' up with 'virtualbox' provider...
     web-2: SSH address: 127.0.0.1:2201
     web-2: SSH username: vagrant
     web-2: SSH auth method: private key
-    web-2: Warning: Remote connection disconnect. Retrying...
     web-2: Warning: Connection reset. Retrying...
+    web-2: Warning: Remote connection disconnect. Retrying...
     web-2: 
     web-2: Vagrant insecure key detected. Vagrant will automatically replace
     web-2: this with a newly generated keypair for better security.
@@ -183,8 +201,8 @@ Bringing machine 'web-2' up with 'virtualbox' provider...
 ==> web-2: Setting hostname...
 ==> web-2: Configuring and enabling network interfaces...
 ==> web-2: Mounting shared folders...
-    web-2: /vagrant => /var/lib/jenkins/workspace/FINAL-TEST
-    web-2: /home/vagrant/resources => /var/lib/jenkins/workspace/FINAL-TEST/resources
+    web-2: /vagrant => /var/lib/jenkins/workspace/FRESH-ANSIBLE-TEST
+    web-2: /home/vagrant/resources => /var/lib/jenkins/workspace/FRESH-ANSIBLE-TEST/resources
 ==> web-2: Running provisioner: shell...
     web-2: Running: inline script
 + sleep 10
@@ -194,14 +212,14 @@ Bringing machine 'web-2' up with 'virtualbox' provider...
 [Pipeline] { (Install docker and deploy containers)
 [Pipeline] sh
 + cd ansible
-+ ansible-playbook --private-key=/var/lib/jenkins/.ssh/id_rsa -u vagrant install-docker.yml
++ ansible-playbook install-docker.yml
 
 PLAY [all] *********************************************************************
 
 TASK [Gathering Facts] *********************************************************
 ok: [192.168.80.20]
-ok: [192.168.80.30]
 ok: [192.168.80.10]
+ok: [192.168.80.30]
 
 TASK [install prerequisites] ***************************************************
 changed: [192.168.80.30]
@@ -214,36 +232,36 @@ changed: [192.168.80.20]
 changed: [192.168.80.10]
 
 TASK [add docker repo] *********************************************************
-changed: [192.168.80.20]
-changed: [192.168.80.10]
 changed: [192.168.80.30]
+changed: [192.168.80.10]
+changed: [192.168.80.20]
 
 TASK [install docker] **********************************************************
-changed: [192.168.80.10]
-changed: [192.168.80.30]
 changed: [192.168.80.20]
+changed: [192.168.80.30]
+changed: [192.168.80.10]
 
 TASK [add userpermissions] *****************************************************
-changed: [192.168.80.20]
-changed: [192.168.80.10]
 changed: [192.168.80.30]
+changed: [192.168.80.10]
+changed: [192.168.80.20]
 
 TASK [install python package manager] ******************************************
-changed: [192.168.80.10]
-changed: [192.168.80.30]
 changed: [192.168.80.20]
+changed: [192.168.80.30]
+changed: [192.168.80.10]
 
 TASK [install python sdk] ******************************************************
 changed: [192.168.80.10]
-changed: [192.168.80.20]
 changed: [192.168.80.30]
+changed: [192.168.80.20]
 
 PLAY RECAP *********************************************************************
 192.168.80.10              : ok=8    changed=7    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 192.168.80.20              : ok=8    changed=7    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 192.168.80.30              : ok=8    changed=7    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 
-+ ansible-playbook --private-key=/var/lib/jenkins/.ssh/id_rsa -u vagrant install-nginx.yml
++ ansible-playbook install-nginx.yml
 
 PLAY [192.168.80.10] ***********************************************************
 
@@ -256,7 +274,8 @@ changed: [192.168.80.10]
 PLAY RECAP *********************************************************************
 192.168.80.10              : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 
-+ ansible-playbook --private-key=/var/lib/jenkins/.ssh/id_rsa -u vagrant install-apache1.yml
++ ansible-playbook install-apache1.yml
+
 PLAY [192.168.80.20] ***********************************************************
 
 TASK [Gathering Facts] *********************************************************
@@ -268,7 +287,7 @@ changed: [192.168.80.20]
 PLAY RECAP *********************************************************************
 192.168.80.20              : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 
-+ ansible-playbook --private-key=/var/lib/jenkins/.ssh/id_rsa -u vagrant install-apache2.yml
++ ansible-playbook install-apache2.yml
 
 PLAY [192.168.80.30] ***********************************************************
 
@@ -291,19 +310,19 @@ PLAY RECAP *********************************************************************
                                  Dload  Upload   Total   Spent    Left  Speed
 
   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-100    52  100    52    0     0  26000      0 --:--:-- --:--:-- --:--:-- 26000
-<h4>Hello from Web Server One (ip:192.168.80.20</h4>+ curl 192.168.80.10
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
-100    52  100    52    0     0  26000      0 --:--:-- --:--:-- --:--:-- 26000
-<h4>Hello from Web Server One (ip:192.168.80.20</h4>+ curl 192.168.80.10
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
 100    52  100    52    0     0  17333      0 --:--:-- --:--:-- --:--:-- 17333
+<h4>Hello from Web Server One (ip:192.168.80.20</h4>+ curl 192.168.80.10
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100    52  100    52    0     0  26000      0 --:--:-- --:--:-- --:--:-- 26000
+<h4>Hello from Web Server One (ip:192.168.80.20</h4>+ curl 192.168.80.10
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100    52  100    52    0     0    981      0 --:--:-- --:--:-- --:--:--   981
 <h4>Hello from Web Server Two (ip:192.168.80.30</h4>+ curl 192.168.80.10
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
@@ -316,13 +335,37 @@ PLAY RECAP *********************************************************************
 
   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
 100    52  100    52    0     0  26000      0 --:--:-- --:--:-- --:--:-- 26000
-<h4>Hello from Web Server Two (ip:192.168.80.30</h4>+ sleep 30
+<h4>Hello from Web Server Two (ip:192.168.80.30</h4>+ curl 192.168.80.10
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100    52  100    52    0     0  26000      0 --:--:-- --:--:-- --:--:-- 26000
+<h4>Hello from Web Server One (ip:192.168.80.20</h4>+ curl 192.168.80.10
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100    52  100    52    0     0  26000      0 --:--:-- --:--:-- --:--:-- 26000
+<h4>Hello from Web Server Two (ip:192.168.80.30</h4>+ curl 192.168.80.10
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100    52  100    52    0     0  26000      0 --:--:-- --:--:-- --:--:-- 26000
+<h4>Hello from Web Server One (ip:192.168.80.20</h4>+ curl 192.168.80.10
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100    52  100    52    0     0  26000      0 --:--:-- --:--:-- --:--:-- 26000
+<h4>Hello from Web Server Two (ip:192.168.80.30</h4>
 [Pipeline] }
 [Pipeline] // stage
 [Pipeline] stage
-[Pipeline] { (Destroy VMs)
+[Pipeline] { (Destroy new VMs)
 [Pipeline] sh
-+ vagrant destroy -f
++ vagrant destroy load-balancer web-1 web-2 -f
 ==> web-2: Forcing shutdown of VM...
 ==> web-2: Destroying VM and associated drives...
 ==> web-1: Forcing shutdown of VM...

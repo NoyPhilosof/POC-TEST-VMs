@@ -1,6 +1,5 @@
 properties([githubProjectProperty(displayName: '', projectUrlStr: 'https://github.com/NoyPhilosof/POC-TEST.git/')])
 
-
 pipeline {
     agent any
 
@@ -13,20 +12,30 @@ pipeline {
         }
         
         
-        // stage('Create SSH key') {
-        //     steps {
-        //         sh 'ssh-keygen -f /var/lib/jenkins/.ssh -q -N ""'
-        //     }
-        // }
-       
+        stage('Create SSH Key') {
+            steps {
+                catchError(message: 'Creating SSH key') {
+                    script {
+                        try{
+                            sh '''ssh-keygen -f ~/.ssh/id_rsa -q -N ""
+                            chmod 400 ~/.ssh/id_rsa'''
+                        }                
+                        catch (e) {
+                            echo "default SSH Key exists"
+                        }
+                    }                
+                }
+            }
+        }
+        
 
         stage('Clean Old VMs') {
             steps {
                 catchError(message: 'Clear VMs before run') {
                     script {
                         try{
-                            sh '''vagrant destroy -f
-                            sleep 10'''
+                            sh '''vagrant destroy load-balancer web-1 web-2 -f
+                            sleep 5'''
                         }                
                         catch (e) {
                             echo "No VMs to clear"
@@ -48,10 +57,10 @@ pipeline {
         stage('Install docker and deploy containers') {
             steps {
                 sh '''cd ansible
-                ansible-playbook --private-key=/var/lib/jenkins/.ssh/id_rsa -u vagrant install-docker.yml
-                ansible-playbook --private-key=/var/lib/jenkins/.ssh/id_rsa -u vagrant install-nginx.yml
-                ansible-playbook --private-key=/var/lib/jenkins/.ssh/id_rsa -u vagrant install-apache1.yml
-                ansible-playbook --private-key=/var/lib/jenkins/.ssh/id_rsa -u vagrant install-apache2.yml'''
+                ansible-playbook install-docker.yml
+                ansible-playbook install-nginx.yml
+                ansible-playbook install-apache1.yml
+                ansible-playbook install-apache2.yml'''
             }
         }
         
@@ -63,14 +72,15 @@ pipeline {
                 curl 192.168.80.10
                 curl 192.168.80.10
                 curl 192.168.80.10
-                sleep 30'''
+                curl 192.168.80.10
+                curl 192.168.80.10'''
             }
         }
         
 
-                stage('Destroy VMs') {
+                stage('Destroy used VMs') {
             steps {
-                sh 'vagrant destroy -f'
+                sh 'vagrant destroy load-balancer web-1 web-2 -f'
             }
         } 
     }
