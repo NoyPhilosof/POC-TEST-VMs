@@ -9,7 +9,7 @@
 <p>6. Vagrant (v2.2.19)</p>
 <p>7. Public and private SSH keys (default naming) stored in /var/lib/jenkins/.ssh</p>
 <p>&nbsp;</p>
-<h4><strong>Instructions for use:</strong></h4>
+<h4><strong>Instructions for use: (Tested on ubuntu 20.04)</strong></h4>
 <p>Please pull code from git with Jenkins and run the pipeline or copy the contents of Jenkinsfile in a new pipeline script.</p>
 <p>&nbsp;</p>
 <h4><strong>Testing:</strong></h4>
