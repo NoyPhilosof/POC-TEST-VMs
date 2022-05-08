@@ -1,0 +1,337 @@
+Started by user admin
+[Pipeline] Start of Pipeline (hide)
+[Pipeline] properties
+[Pipeline] node
+Running on Jenkins in /var/lib/jenkins/workspace/FINAL-TEST
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Clone Repo)
+[Pipeline] git
+The recommended git tool is: NONE
+No credentials specified
+Cloning the remote Git repository
+Cloning repository http://github.com/NoyPhilosof/POC-TEST.git
+ > git init /var/lib/jenkins/workspace/FINAL-TEST # timeout=10
+Fetching upstream changes from http://github.com/NoyPhilosof/POC-TEST.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.25.1'
+ > git fetch --tags --force --progress -- http://github.com/NoyPhilosof/POC-TEST.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git config remote.origin.url http://github.com/NoyPhilosof/POC-TEST.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+Avoid second fetch
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision f62dbbbd22fdbe4ad1b4bae4d43de1a18e1e9cad (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f f62dbbbd22fdbe4ad1b4bae4d43de1a18e1e9cad # timeout=10
+ > git branch -a -v --no-abbrev # timeout=10
+ > git checkout -b main f62dbbbd22fdbe4ad1b4bae4d43de1a18e1e9cad # timeout=10
+Commit message: "fixed docker installation script"
+First time build. Skipping changelog.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Clean Old VMs)
+[Pipeline] catchError
+[Pipeline] {
+[Pipeline] script
+[Pipeline] {
+[Pipeline] sh
++ vagrant destroy -f
+==> web-2: VM not created. Moving on...
+==> web-1: VM not created. Moving on...
+==> load-balancer: VM not created. Moving on...
++ sleep 10
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // catchError
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build & Provision VMs)
+[Pipeline] sh
++ vagrant up
+Bringing machine 'load-balancer' up with 'virtualbox' provider...
+Bringing machine 'web-1' up with 'virtualbox' provider...
+Bringing machine 'web-2' up with 'virtualbox' provider...
+==> load-balancer: Importing base box 'ubuntu/bionic64'...
+[KProgress: 90%
+[K==> load-balancer: Matching MAC address for NAT networking...
+==> load-balancer: Checking if box 'ubuntu/bionic64' version '20220505.0.0' is up to date...
+==> load-balancer: Setting the name of the VM: load-balancer
+==> load-balancer: Clearing any previously set network interfaces...
+==> load-balancer: Preparing network interfaces based on configuration...
+    load-balancer: Adapter 1: nat
+    load-balancer: Adapter 2: hostonly
+==> load-balancer: Forwarding ports...
+    load-balancer: 22 (guest) => 2222 (host) (adapter 1)
+==> load-balancer: Running 'pre-boot' VM customizations...
+==> load-balancer: Booting VM...
+==> load-balancer: Waiting for machine to boot. This may take a few minutes...
+    load-balancer: SSH address: 127.0.0.1:2222
+    load-balancer: SSH username: vagrant
+    load-balancer: SSH auth method: private key
+    load-balancer: Warning: Remote connection disconnect. Retrying...
+    load-balancer: 
+    load-balancer: Vagrant insecure key detected. Vagrant will automatically replace
+    load-balancer: this with a newly generated keypair for better security.
+    load-balancer: 
+    load-balancer: Inserting generated public key within guest...
+    load-balancer: Removing insecure key from the guest if it's present...
+    load-balancer: Key inserted! Disconnecting and reconnecting using new SSH key...
+==> load-balancer: Machine booted and ready!
+==> load-balancer: Checking for guest additions in VM...
+    load-balancer: The guest additions on this VM do not match the installed version of
+    load-balancer: VirtualBox! In most cases this is fine, but in rare cases it can
+    load-balancer: prevent things such as shared folders from working properly. If you see
+    load-balancer: shared folder errors, please make sure the guest additions within the
+    load-balancer: virtual machine match the version of VirtualBox you have installed on
+    load-balancer: your host and reload your VM.
+    load-balancer: 
+    load-balancer: Guest Additions Version: 5.2.42
+    load-balancer: VirtualBox Version: 6.1
+==> load-balancer: Setting hostname...
+==> load-balancer: Configuring and enabling network interfaces...
+==> load-balancer: Mounting shared folders...
+    load-balancer: /vagrant => /var/lib/jenkins/workspace/FINAL-TEST
+    load-balancer: /home/vagrant/resources => /var/lib/jenkins/workspace/FINAL-TEST/resources
+==> load-balancer: Running provisioner: shell...
+    load-balancer: Running: inline script
+==> web-1: Importing base box 'ubuntu/bionic64'...
+[KProgress: 90%
+[K==> web-1: Matching MAC address for NAT networking...
+==> web-1: Checking if box 'ubuntu/bionic64' version '20220505.0.0' is up to date...
+==> web-1: Setting the name of the VM: web-1
+==> web-1: Fixed port collision for 22 => 2222. Now on port 2200.
+==> web-1: Clearing any previously set network interfaces...
+==> web-1: Preparing network interfaces based on configuration...
+    web-1: Adapter 1: nat
+    web-1: Adapter 2: hostonly
+==> web-1: Forwarding ports...
+    web-1: 22 (guest) => 2200 (host) (adapter 1)
+==> web-1: Running 'pre-boot' VM customizations...
+==> web-1: Booting VM...
+==> web-1: Waiting for machine to boot. This may take a few minutes...
+    web-1: SSH address: 127.0.0.1:2200
+    web-1: SSH username: vagrant
+    web-1: SSH auth method: private key
+    web-1: Warning: Connection reset. Retrying...
+    web-1: Warning: Remote connection disconnect. Retrying...
+    web-1: 
+    web-1: Vagrant insecure key detected. Vagrant will automatically replace
+    web-1: this with a newly generated keypair for better security.
+    web-1: 
+    web-1: Inserting generated public key within guest...
+    web-1: Removing insecure key from the guest if it's present...
+    web-1: Key inserted! Disconnecting and reconnecting using new SSH key...
+==> web-1: Machine booted and ready!
+==> web-1: Checking for guest additions in VM...
+    web-1: The guest additions on this VM do not match the installed version of
+    web-1: VirtualBox! In most cases this is fine, but in rare cases it can
+    web-1: prevent things such as shared folders from working properly. If you see
+    web-1: shared folder errors, please make sure the guest additions within the
+    web-1: virtual machine match the version of VirtualBox you have installed on
+    web-1: your host and reload your VM.
+    web-1: 
+    web-1: Guest Additions Version: 5.2.42
+    web-1: VirtualBox Version: 6.1
+==> web-1: Setting hostname...
+==> web-1: Configuring and enabling network interfaces...
+==> web-1: Mounting shared folders...
+    web-1: /vagrant => /var/lib/jenkins/workspace/FINAL-TEST
+    web-1: /home/vagrant/resources => /var/lib/jenkins/workspace/FINAL-TEST/resources
+==> web-1: Running provisioner: shell...
+    web-1: Running: inline script
+==> web-2: Importing base box 'ubuntu/bionic64'...
+[KProgress: 90%
+[K==> web-2: Matching MAC address for NAT networking...
+==> web-2: Checking if box 'ubuntu/bionic64' version '20220505.0.0' is up to date...
+==> web-2: Setting the name of the VM: web-2
+==> web-2: Fixed port collision for 22 => 2222. Now on port 2201.
+==> web-2: Clearing any previously set network interfaces...
+==> web-2: Preparing network interfaces based on configuration...
+    web-2: Adapter 1: nat
+    web-2: Adapter 2: hostonly
+==> web-2: Forwarding ports...
+    web-2: 22 (guest) => 2201 (host) (adapter 1)
+==> web-2: Running 'pre-boot' VM customizations...
+==> web-2: Booting VM...
+==> web-2: Waiting for machine to boot. This may take a few minutes...
+    web-2: SSH address: 127.0.0.1:2201
+    web-2: SSH username: vagrant
+    web-2: SSH auth method: private key
+    web-2: Warning: Remote connection disconnect. Retrying...
+    web-2: Warning: Connection reset. Retrying...
+    web-2: 
+    web-2: Vagrant insecure key detected. Vagrant will automatically replace
+    web-2: this with a newly generated keypair for better security.
+    web-2: 
+    web-2: Inserting generated public key within guest...
+    web-2: Removing insecure key from the guest if it's present...
+    web-2: Key inserted! Disconnecting and reconnecting using new SSH key...
+==> web-2: Machine booted and ready!
+==> web-2: Checking for guest additions in VM...
+    web-2: The guest additions on this VM do not match the installed version of
+    web-2: VirtualBox! In most cases this is fine, but in rare cases it can
+    web-2: prevent things such as shared folders from working properly. If you see
+    web-2: shared folder errors, please make sure the guest additions within the
+    web-2: virtual machine match the version of VirtualBox you have installed on
+    web-2: your host and reload your VM.
+    web-2: 
+    web-2: Guest Additions Version: 5.2.42
+    web-2: VirtualBox Version: 6.1
+==> web-2: Setting hostname...
+==> web-2: Configuring and enabling network interfaces...
+==> web-2: Mounting shared folders...
+    web-2: /vagrant => /var/lib/jenkins/workspace/FINAL-TEST
+    web-2: /home/vagrant/resources => /var/lib/jenkins/workspace/FINAL-TEST/resources
+==> web-2: Running provisioner: shell...
+    web-2: Running: inline script
++ sleep 10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Install docker and deploy containers)
+[Pipeline] sh
++ cd ansible
++ ansible-playbook --private-key=/var/lib/jenkins/.ssh/id_rsa -u vagrant install-docker.yml
+
+PLAY [all] *********************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [192.168.80.20]
+ok: [192.168.80.30]
+ok: [192.168.80.10]
+
+TASK [install prerequisites] ***************************************************
+changed: [192.168.80.30]
+changed: [192.168.80.10]
+changed: [192.168.80.20]
+
+TASK [add apt-key] *************************************************************
+changed: [192.168.80.30]
+changed: [192.168.80.20]
+changed: [192.168.80.10]
+
+TASK [add docker repo] *********************************************************
+changed: [192.168.80.20]
+changed: [192.168.80.10]
+changed: [192.168.80.30]
+
+TASK [install docker] **********************************************************
+changed: [192.168.80.10]
+changed: [192.168.80.30]
+changed: [192.168.80.20]
+
+TASK [add userpermissions] *****************************************************
+changed: [192.168.80.20]
+changed: [192.168.80.10]
+changed: [192.168.80.30]
+
+TASK [install python package manager] ******************************************
+changed: [192.168.80.10]
+changed: [192.168.80.30]
+changed: [192.168.80.20]
+
+TASK [install python sdk] ******************************************************
+changed: [192.168.80.10]
+changed: [192.168.80.20]
+changed: [192.168.80.30]
+
+PLAY RECAP *********************************************************************
+192.168.80.10              : ok=8    changed=7    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+192.168.80.20              : ok=8    changed=7    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+192.168.80.30              : ok=8    changed=7    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
++ ansible-playbook --private-key=/var/lib/jenkins/.ssh/id_rsa -u vagrant install-nginx.yml
+
+PLAY [192.168.80.10] ***********************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [192.168.80.10]
+
+TASK [deploy container] ********************************************************
+changed: [192.168.80.10]
+
+PLAY RECAP *********************************************************************
+192.168.80.10              : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
++ ansible-playbook --private-key=/var/lib/jenkins/.ssh/id_rsa -u vagrant install-apache1.yml
+PLAY [192.168.80.20] ***********************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [192.168.80.20]
+
+TASK [deploy container] ********************************************************
+changed: [192.168.80.20]
+
+PLAY RECAP *********************************************************************
+192.168.80.20              : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
++ ansible-playbook --private-key=/var/lib/jenkins/.ssh/id_rsa -u vagrant install-apache2.yml
+
+PLAY [192.168.80.30] ***********************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [192.168.80.30]
+
+TASK [deploy container] ********************************************************
+changed: [192.168.80.30]
+
+PLAY RECAP *********************************************************************
+192.168.80.30              : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Web TEST)
+[Pipeline] sh
++ curl 192.168.80.10
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100    52  100    52    0     0  26000      0 --:--:-- --:--:-- --:--:-- 26000
+<h4>Hello from Web Server One (ip:192.168.80.20</h4>+ curl 192.168.80.10
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100    52  100    52    0     0  26000      0 --:--:-- --:--:-- --:--:-- 26000
+<h4>Hello from Web Server One (ip:192.168.80.20</h4>+ curl 192.168.80.10
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100    52  100    52    0     0  17333      0 --:--:-- --:--:-- --:--:-- 17333
+<h4>Hello from Web Server Two (ip:192.168.80.30</h4>+ curl 192.168.80.10
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100    52  100    52    0     0  26000      0 --:--:-- --:--:-- --:--:-- 26000
+<h4>Hello from Web Server One (ip:192.168.80.20</h4>+ curl 192.168.80.10
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+100    52  100    52    0     0  26000      0 --:--:-- --:--:-- --:--:-- 26000
+<h4>Hello from Web Server Two (ip:192.168.80.30</h4>+ sleep 30
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Destroy VMs)
+[Pipeline] sh
++ vagrant destroy -f
+==> web-2: Forcing shutdown of VM...
+==> web-2: Destroying VM and associated drives...
+==> web-1: Forcing shutdown of VM...
+==> web-1: Destroying VM and associated drives...
+==> load-balancer: Forcing shutdown of VM...
+==> load-balancer: Destroying VM and associated drives...
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
