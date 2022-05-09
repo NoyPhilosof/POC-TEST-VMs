@@ -1,4 +1,4 @@
-<h2 style="text-align: center;"><u>POC Task</u></h2>
+<h2 style="text-align: center;"><u>POC Test = VMs edition</u></h2>
 <p>This is a POC test for DevOps position. It contains Jenkins pipeline running Vgarant script to build 3 ubuntu VMs, Ansible playbooks for running Dockerized nginx and apache servers and a test phase.</p>
 <h4><strong>Prerequisites:</strong></h4>
 <p>1. Jenkins Server (v2.332.3) with Ansible plugin (v1.1)</p>
